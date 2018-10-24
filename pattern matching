@@ -1,0 +1,31 @@
+#include <iostream>
+#include<string.h>
+
+using namespace std;
+void pattern(char pat[], char txt[])
+{
+    int x = strlen(pat);
+    int y= strlen(txt);
+
+
+    for (int i = 0; i <= y- x; i++) {
+        int j;
+     for (j = 0; j < x; j++)
+            if (txt[i + j] != pat[j])
+                break;
+
+        if (j == x)
+            cout<<"Pattern found at index "<<i;
+    }
+}
+int main()
+{
+    char txt[100] ,pat[100];
+    cout<<"Give Text:";
+    cin>>txt;
+    cout<<"Give Pattern:";
+    cin>>pat;
+
+    pattern(pat, txt);
+    return 0;
+}
