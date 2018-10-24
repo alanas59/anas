@@ -1,0 +1,210 @@
+#include<stdio.h>
+
+struct node
+{
+    int data;
+    struct node* next;
+};
+struct node* creatlist(struct node* last);
+void display(struct node* last);
+struct node* addtoempty(struct node* last,int value);
+struct node* addatbeg(struct node* last,int value);
+struct node* addatend(struct node* last,int value);
+struct node* addafter(struct node* last,int value,int item);
+struct node* del(struct node* last,int value);
+
+
+int main()
+{
+    int choice,item,value;
+    struct node* last= NULL;
+
+        printf("\n1. Create a list.");
+        printf("\n2. Display list.");
+        printf("\n3. Add to empty list.");
+        printf("\n4. Add at beginning.");
+        printf("\n5. Add at end.");
+        printf("\n6. Add after node.");
+        printf("\n7. Delete a node.");
+        printf("\n8. Exit.");
+
+    while(1)
+    {
+
+        printf("\n\nEnter your choice: ");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+        case 1:
+            last= creatlist(last);
+             break;
+        case 2:
+             display(last);
+            break;
+        case 3:
+            printf("Enter a number for the list:");
+            scanf("%d",&value);
+            last= addtoempty(last,value);
+            break;
+        case 4:
+            printf("Enter a number for the list:");
+            scanf("%d",&value);
+            last= addatbeg(last,value);
+            break;
+        case 5:
+            printf("Enter a number for the list:");
+            scanf("%d",&value);
+            last= addatend(last,value);
+            break;
+        case 6:
+            printf("Enter a number for the list:");
+            scanf("%d",&value);
+            printf("Enter a item value:");
+            scanf("%d",&item);
+            last= addafter(last,value,item);
+            break;
+        case 7:
+            printf("Enter a value for delete:");
+            scanf("%d",&value);
+            last= del(last,value);
+            break;
+        case 8:
+            exit(0);
+            break;
+        default:
+            printf("Invalid chioce.");
+
+        }
+    }
+}
+struct node* creatlist(struct node* last)            ///last sob ses node k point kortese;
+{
+   int i,n,value;
+   printf("How many number you can enter for list:");
+   scanf("%d",&n);
+   printf("Enter the first value:");
+   scanf("%d",&value);
+   last=addtoempty(last,value);
+   for(i=2; i<=n; i++)
+   {
+       printf("Enter data for the list ");
+       scanf("%d",&value);
+       last= addatend(last,value);
+   }
+   return last;
+}
+
+void display(struct node* last)
+{
+    struct node* t;
+    if(last==NULL)
+        printf("List is empty.");
+    else{
+        t = last->next;
+        do
+        {
+            printf("%d ",t->data);
+            t = t->next;
+        }while(t!=last->next);
+    }
+}
+struct node* addatbeg(struct node* last,int value)
+{
+   struct node* n;
+   n=malloc(sizeof(struct node));
+   n->data = value;              ///n->data mane n jake point kortase tar data part a value assin;
+   n->next = last->next;
+   last->next= n;
+   return(last);
+}
+
+struct node* addtoempty(struct node* last,int value)
+{
+  struct node* n;
+  n=malloc(sizeof(struct node));
+   n->data = value;
+   last=n;
+   last->next=last;      ///as it is a circular list tai ni je i nijak i point korar jonne;
+   return(last);
+}
+
+struct node* addatend(struct node* last,int value)
+{
+    struct node* n;
+    n=malloc(sizeof(struct node));
+    n->data= value;
+    n->next= last->next;
+    last->next= n;
+    last= n;                       ///new node (n) k end node point kari (last) a assin korlam;
+    return last;
+};
+
+struct node* addafter(struct node* last,int value,int item)
+{
+   struct node* t,*n;
+   t= last->next;        ///notun pointer t ta protom node ar address rakhlam;
+   do
+   {
+      if(t->data==item)
+      {
+         n=malloc(sizeof(struct node));
+         n->data= value;
+         n->next= t->next;
+         t->next= n;
+         if(t==last)      ///amer koja value(item) jodi sober ses a thake;
+            last=n;
+         return last;
+      }
+      t=t->next;         ///adress a increment korar jonne
+   }while(t!=last->next);
+   printf("%d is not in list.\n");
+   return last;
+}
+
+struct node* del(struct node* last,int value)
+{
+   struct node* t,*p;
+   if(last==NULL)
+        printf("List is empty.\n");
+   return last;
+
+   if(last==last->next && last->data==value)       ///jodi node akta i thake;
+   {
+       t= last;
+   last= NULL;
+   free(t);
+   return last;
+   }
+
+   if(last->next->data==value)        ///jodi prothom node k delete korte hoi;
+   {
+       t= last->next;
+       last->next= t->next;
+       free(t);
+       return last;
+   }
+
+   p= last->next;
+   while(p->next!= last)
+   {
+      if(p->next->data==value)    ///p->next a j adress ase sai adress contain kari node ar data;
+      {
+          t= p->next;             ///t protom node k point kortesa;
+          p->next=t->next;
+          free(t);
+          return last;
+      }
+      p= p->next;
+   }
+
+   if(last->data==value)        ///ses node k delete korte;
+   {
+       t= last;
+       p->next= last->next;     ///loop ses a (p) second last k point kortese;
+       last=p;
+       free(t);
+       return last;
+   }
+   printf("%d is not found.\n",value);
+   return last;
+}
