@@ -1,0 +1,27 @@
+#include<iostream>
+#include<string>
+using namespace std;
+void replace(string s,string p1,string p2)
+{
+    int x,y;
+    x=p1.length();
+    y=s.find(p1);
+    s.replace(y,x,p2);
+    cout<<"After Replace :"<<s;
+
+
+
+}
+int main()
+{
+    string s1,s2,s3;
+    cout<<"Given String:";
+    cin>>s1;
+    cout<<"Pattern 1:";
+    cin>>s2;
+    cout<<"Pattern 2:";
+    cin>>s3;
+    replace(s1,s2,s3);
+    return 0;
+}
+
